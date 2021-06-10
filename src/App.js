@@ -10,14 +10,27 @@ const theme = {
 }
 
 function App() {
-  fetch("https://api.petfinder.com/v2/animals", {
-    method: 'GET',
+  fetch ('https://api.petfinder.com/v2/oauth2/token', {
+    method: 'POST',
     headers: {
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJ0bWpTckU2TEU0cWhxVUUzZjRDUmNYcVVoamdKNGR0YlV2bjcxZ3B0S25TNkVSNzN2QSIsImp0aSI6Ijk2MGUzYzAyNWQ2MTFjMDcxN2FjOTU1ZDVhNGEzMTQwMDIxYTIwYzRhZWY2MWE3ZmMyN2JkYjhjYWM3NmYyZGJjMDM5M2I0YmZjNmI5NDk2IiwiaWF0IjoxNjIzMjA0NDczLCJuYmYiOjE2MjMyMDQ0NzMsImV4cCI6MTYyMzIwODA3Mywic3ViIjoiIiwic2NvcGVzIjpbXX0.nxDHGFJBiHX2qOU3octyR_kxxha7XeIS6XPOB_S9XKeuJVW7xglWIvLptEVCzonOMd9w8BrB6HbOC88XUnjyv9yqMA5aJSAB_C67cI7fbSGhiW-qwcpT3Aja_i3YTdujz_nM8LLe_U6DCQzn_5V-o-sT2Nt-vsd6byFa3Igw1u9CQM8IT_870q0VdSY0mQWAFc0K6uT5DCJAhcOvuecDQGbPOgSn3QhJmdwKVS7EsZyEzbh628VzRXy0f7YzCLuWPjhPHq0TO6Ixx287B095_KmOyeXZ1dE-4D7_jX4XV3aZ_uZPoZFreMCSzgxw82E2ew1DQ3ue5c-xpjstpoJlqA'
-    }
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body:
+      'grant_type=client_credentials&client_id=tmjSrE6LE4qhqUE3f4CRcXqUhjgJ4dtbUvn71gptKnS6ER73vA&client_secret=MqbdqXDWWjXraXk1MnimhVddm27wT04yEBNLMMM3'
   })
   .then (response => response.json())
-  .then(data => {console.log(data)});
+  .then(data => {
+    const result = data;
+    console.log(result);
+    fetch("https://api.petfinder.com/v2/animals", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${result.access_token}`
+      }
+    })
+    .then (response => response.json())
+    .then (data => console.log(data))
+  })
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
